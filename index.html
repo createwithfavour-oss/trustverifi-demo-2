@@ -1,19 +1,1684 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TrustVerifi — The Trust Layer for the Internet</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrustVerifi — The Trust Layer for the Internet</title>
+  <meta name="description" content="TrustVerifi brings your verified identity, real client feedback, and confirmed work history into one trust profile. Share it anywhere clients decide whether to hire you.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================
+       CSS CUSTOM PROPERTIES
+    ============================ */
+    :root {
+      --bg-primary:       #FAF9F6;
+      --bg-secondary:     #F3F1EC;
+      --bg-card:          #FFFFFF;
+      --bg-cta:           #EFF8F6;
+      --bg-footer:        #FAF9F6;
+
+      --brand-primary:    #1A6B5A;
+      --brand-dark:       #14332D;
+      --brand-accent:     #2BA88C;
+      --brand-accent-bg:  #E6F5F0;
+
+      --text-primary:     #1A1A1A;
+      --text-secondary:   #555555;
+      --text-muted:       #888888;
+      --text-on-accent:   #FFFFFF;
+
+      --border-light:     #E8E5DF;
+      --border-hover:     #D0CDC6;
+
+      --success:          #22C55E;
+      --error:            #EF4444;
+    }
+
+    /* ============================
+       BASE STYLES
+    ============================ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3.serif {
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+    }
+
+    a { color: inherit; }
+
+    img { max-width: 100%; display: block; }
+
+    ul { list-style: none; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ============================
+       TYPOGRAPHY
+    ============================ */
+    .hero-headline {
+      font-size: clamp(32px, 4.5vw, 52px);
+      line-height: 1.15;
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+    }
+
+    .section-heading {
+      font-size: clamp(26px, 3.5vw, 38px);
+      line-height: 1.2;
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ============================
+       SECTION RHYTHM
+    ============================ */
+    .section {
+      padding: 80px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .section-header .section-heading {
+      color: var(--brand-dark);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .section-header .section-supporting {
+      color: var(--text-secondary);
+      font-size: 17px;
+      line-height: 1.65;
+      max-width: 600px;
+      margin: 16px auto 0;
+    }
+
+    /* ============================
+       PILL LABELS
+    ============================ */
+    .pill {
+      display: inline-block;
+      background: var(--brand-accent-bg);
+      color: var(--brand-accent);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    /* ============================
+       BUTTONS
+    ============================ */
+    .btn-primary {
+      display: inline-block;
+      background: var(--brand-dark);
+      color: var(--text-on-accent);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 12px 28px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px) scale(1.02);
+      background: #1a4a3f;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      color: var(--brand-dark);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 12px 28px;
+      border-radius: 8px;
+      border: 1px solid var(--brand-dark);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--brand-accent-bg);
+    }
+
+    /* ============================
+       MOCKUP PLACEHOLDER
+    ============================ */
+    .mockup-placeholder {
+      background: #F0EEEA;
+      border: 1px dashed var(--border-light);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      padding: 60px 24px;
+      text-align: center;
+      min-height: 300px;
+    }
+
+    /* ============================
+       SCROLL ANIMATIONS
+    ============================ */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stagger-item {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .fade-in.visible .stagger-item:nth-child(1) { transition-delay: 0s; }
+    .fade-in.visible .stagger-item:nth-child(2) { transition-delay: 0.1s; }
+    .fade-in.visible .stagger-item:nth-child(3) { transition-delay: 0.15s; }
+    .fade-in.visible .stagger-item:nth-child(4) { transition-delay: 0.2s; }
+    .fade-in.visible .stagger-item:nth-child(5) { transition-delay: 0.25s; }
+    .fade-in.visible .stagger-item:nth-child(6) { transition-delay: 0.3s; }
+    .fade-in.visible .stagger-item:nth-child(7) { transition-delay: 0.35s; }
+    .fade-in.visible .stagger-item:nth-child(8) { transition-delay: 0.4s; }
+
+    .fade-in.visible .stagger-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in, .stagger-item {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* ============================
+       1. NAVBAR
+    ============================ */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      transition: background 0.3s ease, border-color 0.3s ease;
+      border-bottom: 1px solid transparent;
+    }
+
+    .navbar.scrolled {
+      background: rgba(250, 249, 246, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom-color: var(--border-light);
+    }
+
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 18px;
+      color: var(--brand-dark);
+      text-decoration: none;
+    }
+
+    .navbar-logo svg {
+      width: 24px;
+      height: 24px;
+      color: var(--brand-accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      font-size: 15px;
+      color: var(--brand-dark);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover { color: var(--brand-accent); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-right .login-link {
+      font-size: 15px;
+      color: var(--brand-dark);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-right .login-link:hover { color: var(--brand-accent); }
+    .nav-right .btn-primary { padding: 10px 20px; }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--brand-dark);
+      padding: 4px;
+    }
+
+    .mobile-toggle svg { width: 24px; height: 24px; }
+
+    .mobile-menu {
+      display: none;
+      background: var(--bg-primary);
+      border-top: 1px solid var(--border-light);
+      padding: 24px;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-size: 15px;
+      color: var(--brand-dark);
+      text-decoration: none;
+      padding: 4px 0;
+    }
+
+    .mobile-menu hr { border: none; border-top: 1px solid var(--border-light); }
+    .mobile-menu .btn-primary { text-align: center; }
+
+    /* ============================
+       2. HERO
+    ============================ */
+    .hero {
+      padding-top: 140px;
+      padding-bottom: 64px;
+      background: var(--bg-primary);
+      text-align: center;
+    }
+
+    .hero .hero-headline {
+      color: var(--brand-dark);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero .hero-supporting {
+      color: var(--text-secondary);
+      font-size: 17px;
+      line-height: 1.65;
+      max-width: 600px;
+      margin: 24px auto 0;
+    }
+
+    .hero .hero-cta { margin-top: 32px; }
+
+    .hero-profile-card {
+      margin-top: 56px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-card-inner {
+      border-radius: 16px;
+      border: 1px solid var(--border-light);
+      background: var(--bg-card);
+      padding: 24px 32px;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.04);
+    }
+
+    .hero-card-layout {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .hero-card-left { flex: 1; min-width: 0; }
+
+    .hero-card-right {
+      width: 200px;
+      flex-shrink: 0;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .profile-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .profile-name { font-weight: 600; font-size: 15px; color: var(--brand-dark); }
+    .profile-title { font-size: 13px; color: var(--text-muted); }
+
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--brand-accent-bg);
+      color: var(--brand-accent);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .verified-badge svg { width: 12px; height: 12px; }
+
+    .review-snippet {
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .review-snippet .review-label { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+
+    .review-snippet .review-text {
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.55;
+    }
+
+    .review-metrics { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+
+    .review-metric-pill {
+      font-size: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      padding: 2px 10px;
+      color: var(--text-secondary);
+    }
+
+    .trust-score-label { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+
+    .trust-score-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 36px;
+      font-weight: 500;
+      color: var(--brand-primary);
+      line-height: 1;
+    }
+
+    .score-bars { margin-top: 16px; text-align: left; }
+
+    .score-bar-item { margin-bottom: 10px; }
+    .score-bar-item:last-child { margin-bottom: 0; }
+
+    .score-bar-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+
+    .score-bar-track {
+      height: 6px;
+      background: var(--border-light);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      background: var(--brand-accent);
+      border-radius: 3px;
+      transition: width 0.7s ease;
+    }
+
+    .hero-card-buttons { display: flex; gap: 8px; margin-top: 16px; }
+
+    .hero-card-buttons button {
+      flex: 1;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      padding: 6px 0;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .hero-card-buttons .btn-hire { background: var(--brand-dark); color: var(--text-on-accent); }
+    .hero-card-buttons .btn-shortlist { background: transparent; border: 1px solid var(--brand-dark); color: var(--brand-dark); }
+
+    .trust-signals-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .trust-signal-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .trust-signal-item svg { width: 18px; height: 18px; color: var(--brand-accent); }
+
+    /* ============================
+       3. FEATURES OVERVIEW
+    ============================ */
+    .features-overview { background: var(--bg-primary); border-top: 1px solid var(--border-light); }
+
+    .features-explorer { display: flex; gap: 32px; }
+
+    .features-tabs {
+      width: 380px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .feature-tab {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      text-align: left;
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'DM Sans', sans-serif;
+      width: 100%;
+    }
+
+    .feature-tab:hover { border-color: var(--border-light); background: var(--bg-card); }
+
+    .feature-tab.active {
+      border-color: var(--brand-accent);
+      background: rgba(230, 245, 240, 0.5);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.03);
+    }
+
+    .feature-tab svg { width: 20px; height: 20px; margin-top: 2px; flex-shrink: 0; color: var(--text-muted); }
+    .feature-tab.active svg { color: var(--brand-accent); }
+
+    .feature-tab-title { font-size: 15px; font-weight: 600; line-height: 1.4; color: var(--text-primary); }
+    .feature-tab.active .feature-tab-title { color: var(--brand-dark); }
+
+    .feature-tab-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .feature-tab.active .feature-tab-desc { display: block; }
+
+    .features-mockup { flex: 1; min-width: 0; }
+    .features-mockup .mockup-placeholder { height: 100%; min-height: 400px; }
+
+    .feature-mockup-panel { display: none; height: 100%; }
+    .feature-mockup-panel.active { display: block; }
+
+    /* ============================
+       4. FEATURE DETAIL CARDS
+    ============================ */
+    .feature-details { background: var(--bg-secondary); }
+
+    .feature-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .feature-detail-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 24px;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .feature-detail-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .feature-detail-card .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: var(--brand-accent-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .feature-detail-card .card-icon svg { width: 20px; height: 20px; color: var(--brand-accent); }
+
+    .feature-detail-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--brand-primary);
+      margin-bottom: 8px;
+      line-height: 1.3;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .feature-detail-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.55; }
+
+    /* ============================
+       5. COMPARISON
+    ============================ */
+    .comparison { background: var(--bg-primary); border-top: 1px solid var(--border-light); }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .comparison-card { border-radius: 16px; padding: 28px 32px; }
+
+    .comparison-card.typical { background: var(--bg-card); border: 1px solid var(--border-light); }
+    .comparison-card.verified { background: var(--bg-cta); border: 2px solid rgba(43, 168, 140, 0.3); }
+
+    .comparison-card .card-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .comparison-card.typical .card-label { color: var(--text-muted); }
+    .comparison-card.verified .card-label { color: var(--brand-accent); }
+    .comparison-card.verified .card-label svg { width: 16px; height: 16px; }
+
+    .stars { color: #F59E0B; font-size: 18px; margin-bottom: 12px; }
+
+    .typical-quote {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+
+    .learns-label { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-bottom: 12px; }
+
+    .learns-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .learns-list li:last-child { margin-bottom: 0; }
+    .learns-list li svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    .comparison-card.typical .learns-list li { color: var(--text-muted); }
+    .comparison-card.typical .learns-list li svg { color: var(--error); }
+    .comparison-card.verified .learns-list li { color: var(--brand-dark); }
+    .comparison-card.verified .learns-list li svg { color: var(--success); }
+
+    .project-info { margin-bottom: 16px; }
+    .project-info .project-name { font-size: 14px; font-weight: 600; color: var(--brand-dark); }
+    .project-info .project-meta { font-size: 13px; color: var(--text-muted); }
+
+    .qa-block { margin-bottom: 12px; }
+    .qa-block:last-child { margin-bottom: 0; }
+    .qa-block .qa-question { font-size: 13px; font-weight: 600; color: var(--brand-dark); margin-bottom: 2px; }
+    .qa-block .qa-answer { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+
+    .metric-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 20px; }
+
+    .metric-pill {
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      padding: 3px 12px;
+      color: var(--text-secondary);
+    }
+
+    .comparison-below { text-align: center; margin-top: 40px; }
+    .comparison-below p { font-size: 17px; color: var(--text-secondary); margin-bottom: 24px; }
+
+    /* ============================
+       6. HOW IT WORKS
+    ============================ */
+    .how-it-works { background: var(--bg-secondary); }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .steps-connector {
+      display: none;
+      position: absolute;
+      top: 20px;
+      left: calc(33.333% - 12px);
+      right: calc(33.333% - 12px);
+      border-top: 2px dashed var(--border-light);
+    }
+
+    .step-card { text-align: center; position: relative; z-index: 1; }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--brand-accent);
+      color: var(--text-on-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .step-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--brand-dark);
+      margin-bottom: 8px;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .step-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 16px; }
+
+    .time-pill {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--brand-accent-bg);
+      color: var(--brand-accent);
+      border-radius: 20px;
+      padding: 4px 12px;
+    }
+
+    /* ============================
+       7. WHO IT'S FOR
+    ============================ */
+    .who-its-for { background: var(--bg-primary); border-top: 1px solid var(--border-light); }
+
+    .toggle-container { display: flex; justify-content: center; margin-bottom: 40px; }
+
+    .toggle-group {
+      display: inline-flex;
+      border-radius: 50px;
+      border: 1px solid var(--border-light);
+      background: var(--bg-card);
+      padding: 4px;
+    }
+
+    .toggle-btn {
+      border-radius: 50px;
+      padding: 8px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      border: none;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+    }
+
+    .toggle-btn:hover { color: var(--text-primary); }
+    .toggle-btn.active { background: var(--brand-accent-bg); color: var(--brand-dark); }
+
+    .toggle-content {
+      max-width: 700px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid var(--border-light);
+      padding: 32px 40px;
+    }
+
+    .toggle-panel { display: none; }
+    .toggle-panel.active { display: block; }
+
+    .toggle-panel h3 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--brand-dark);
+      margin-bottom: 12px;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .toggle-panel > p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px; }
+
+    .pain-list { margin-bottom: 24px; }
+
+    .pain-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.55;
+      margin-bottom: 12px;
+    }
+
+    .pain-list li:last-child { margin-bottom: 0; }
+
+    .pain-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--brand-accent);
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+
+    .pull-quote { border-left: 2px solid var(--brand-accent); padding-left: 16px; margin-bottom: 24px; }
+    .pull-quote p { font-size: 15px; color: var(--text-secondary); font-style: italic; line-height: 1.55; }
+    .pull-quote cite { display: block; font-size: 13px; color: var(--text-muted); font-style: normal; margin-top: 4px; }
+
+    /* ============================
+       8. BROKEN ALTERNATIVES
+    ============================ */
+    .broken-alts { background: var(--bg-secondary); }
+
+    .broken-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .broken-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 24px;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .broken-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .broken-card .broken-emoji { font-size: 24px; margin-bottom: 12px; }
+    .broken-card .broken-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 8px; }
+    .broken-card .broken-quote { font-size: 15px; color: var(--text-secondary); line-height: 1.55; font-style: italic; }
+
+    .broken-closing {
+      text-align: center;
+      max-width: 560px;
+      margin: 40px auto 0;
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ============================
+       9. SOCIAL PROOF / STATS
+    ============================ */
+    .social-proof { background: var(--bg-primary); border-top: 1px solid var(--border-light); }
+
+    .trust-signals-grid {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .trust-signal-card { display: flex; align-items: center; gap: 12px; }
+
+    .trust-signal-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--brand-accent-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .trust-signal-icon svg { width: 20px; height: 20px; color: var(--brand-accent); }
+    .trust-signal-text { font-size: 15px; color: var(--text-secondary); line-height: 1.4; max-width: 220px; }
+
+    /* ============================
+       10. FINAL CTA
+    ============================ */
+    .final-cta { padding: 80px 0; }
+
+    .cta-card {
+      background: var(--bg-cta);
+      border-radius: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 64px 32px;
+      text-align: center;
+    }
+
+    .cta-card .section-heading { color: var(--brand-dark); max-width: 550px; margin: 12px auto 0; }
+    .cta-card .cta-supporting { font-size: 17px; color: var(--text-secondary); max-width: 450px; margin: 16px auto 0; line-height: 1.6; }
+    .cta-card .btn-primary { margin-top: 32px; }
+
+    /* ============================
+       11. FOOTER
+    ============================ */
+    .footer {
+      background: var(--bg-footer);
+      border-top: 1px solid var(--border-light);
+      padding: 48px 0 32px;
+    }
+
+    .footer-grid { display: flex; justify-content: space-between; gap: 40px; }
+
+    .footer-brand .navbar-logo { margin-bottom: 12px; }
+    .footer-tagline { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; }
+    .footer-socials { display: flex; gap: 12px; }
+
+    .footer-social-link {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-social-link:hover { color: var(--brand-accent); }
+    .footer-social-link svg { width: 16px; height: 16px; }
+
+    .footer-links ul { display: flex; flex-wrap: wrap; gap: 24px; }
+
+    .footer-links a {
+      font-size: 14px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover { color: var(--brand-accent); }
+
+    .footer-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border-light); }
+    .footer-bottom p { font-size: 13px; color: var(--text-muted); }
+
+    /* ============================
+       RESPONSIVE
+    ============================ */
+    @media (min-width: 769px) {
+      .steps-connector { display: block; }
+    }
+
+    @media (max-width: 1024px) {
+      .feature-cards-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .section { padding: 60px 0; }
+
+      .nav-links, .nav-right { display: none; }
+      .mobile-toggle { display: block; }
+
+      .hero { padding-top: 110px; padding-bottom: 48px; }
+      .hero-headline { font-size: 32px; }
+
+      .hero-card-layout { flex-direction: column; }
+      .hero-card-right { width: 100%; }
+      .hero-card-inner { padding: 20px; }
+
+      .trust-signals-row { gap: 16px; flex-direction: column; }
+
+      .features-explorer { flex-direction: column; }
+      .features-tabs { width: 100%; }
+
+      .comparison-grid { grid-template-columns: 1fr; }
+      .comparison-card { padding: 24px; }
+
+      .steps-grid { grid-template-columns: 1fr; gap: 32px; }
+
+      .toggle-content { padding: 24px 20px; }
+
+      .broken-grid { grid-template-columns: 1fr; }
+
+      .trust-signals-grid { flex-direction: column; gap: 24px; }
+
+      .cta-card { padding: 48px 24px; }
+
+      .footer-grid { flex-direction: column; }
+      .footer-links ul { gap: 16px; }
+    }
+
+    @media (max-width: 600px) {
+      .feature-cards-grid { grid-template-columns: 1fr; }
+      .container { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================
+       1. NAVBAR
+  ======================================== -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="navbar-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        TrustVerifi
+      </a>
+
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+
+      <div class="nav-right">
+        <a href="#" class="login-link">Log In</a>
+        <a href="#" class="btn-primary">Start for free</a>
+      </div>
+
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+        <svg id="menuIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        <svg id="closeIcon" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#pricing">Pricing</a>
+      <hr>
+      <a href="#">Log In</a>
+      <a href="#" class="btn-primary">Start for free</a>
+    </div>
+  </nav>
+
+  <!-- ========================================
+       2. HERO
+  ======================================== -->
+  <section class="hero">
+    <div class="container">
+      <h1 class="hero-headline">
+        Your work speaks for itself.<br>Now your proof can too.
+      </h1>
+      <p class="hero-supporting">
+        TrustVerifi brings your verified identity, real client feedback, and confirmed work history into one trust profile. Share it in proposals, on LinkedIn, or anywhere clients are deciding whether to hire you.
+      </p>
+      <div class="hero-cta">
+        <a href="#" class="btn-primary">Start for free</a>
+      </div>
+
+      <!-- Hero trust profile card -->
+      <div class="hero-profile-card fade-in">
+        <div class="hero-card-inner">
+          <div class="hero-card-layout">
+            <div class="hero-card-left">
+              <div class="profile-header">
+                <div class="profile-avatar">JD</div>
+                <div>
+                  <p class="profile-name">Jordan Daniels</p>
+                  <p class="profile-title">Paid Media Consultant</p>
+                </div>
+              </div>
+              <div class="verified-badge">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Identity Verified
+              </div>
+              <div class="review-snippet">
+                <p class="review-label">Latest Review Snippet</p>
+                <p class="review-text">"Lead volume increased by 60%. Average ROI of 3.8x across both channels."</p>
+                <div class="review-metrics">
+                  <span class="review-metric-pill">+60% leads</span>
+                  <span class="review-metric-pill">3.8x ROI</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-card-right">
+              <p class="trust-score-label">Trust Score</p>
+              <p class="trust-score-number" id="trustScoreDisplay">0</p>
+              <div class="score-bars">
+                <div class="score-bar-item">
+                  <div class="score-bar-header"><span>Identity</span><span>95</span></div>
+                  <div class="score-bar-track"><div class="score-bar-fill" data-width="95" style="width:0%"></div></div>
+                </div>
+                <div class="score-bar-item">
+                  <div class="score-bar-header"><span>Reviews</span><span>82</span></div>
+                  <div class="score-bar-track"><div class="score-bar-fill" data-width="82" style="width:0%"></div></div>
+                </div>
+                <div class="score-bar-item">
+                  <div class="score-bar-header"><span>Relationships</span><span>88</span></div>
+                  <div class="score-bar-track"><div class="score-bar-fill" data-width="88" style="width:0%"></div></div>
+                </div>
+              </div>
+              <div class="hero-card-buttons">
+                <button class="btn-hire">Hire</button>
+                <button class="btn-shortlist">Shortlist</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trust-signals-row">
+        <div class="trust-signal-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Verification powered by ComplyCube</span>
+        </div>
+        <div class="trust-signal-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Your data is encrypted and secure</span>
+        </div>
+        <div class="trust-signal-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span>Built for professionals everywhere</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       3. FEATURES OVERVIEW
+  ======================================== -->
+  <section id="features" class="features-overview section fade-in">
+    <div class="container">
+      <div class="section-header">
+        <span class="pill">How it works</span>
+        <h2 class="section-heading">Everything a prospect needs to trust you. One profile.</h2>
+        <p class="section-supporting">TrustVerifi connects four layers of verification into a single trust profile that any prospect can check.</p>
+      </div>
+
+      <div class="features-explorer">
+        <div class="features-tabs">
+          <button class="feature-tab active" data-tab="0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="9" y1="10" x2="15" y2="10"/></svg>
+            <div>
+              <p class="feature-tab-title">Reviews with real deliverables and results</p>
+              <p class="feature-tab-desc">Most reviews are useless. "Great to work with" tells a prospect nothing. TrustVerifi flips the process. You define the questions your client answers. What did we deliver? What results did you see? Would you hire us again? Your client fills in the specifics. You get a review with real numbers, real deliverables, and real context.</p>
+            </div>
+          </button>
+
+          <button class="feature-tab" data-tab="1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            <div>
+              <p class="feature-tab-title">A trust score that shows its work</p>
+              <p class="feature-tab-desc">Your trust score isn't a mystery number. It's built from visible, checkable components. Verified identity. Confirmed work relationships. Authenticated reviews. Sentiment analysis. Anyone viewing your profile can see exactly how the score was calculated. No black box. No pay-to-play manipulation.</p>
+            </div>
+          </button>
+
+          <button class="feature-tab" data-tab="2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            <div>
+              <p class="feature-tab-title">One profile that works everywhere</p>
+              <p class="feature-tab-desc">Your TrustVerifi profile isn't locked inside a marketplace you can't control. Share it with a link in your proposals. Embed a widget on your website. Add your Digital Trust ID to your email signature. Drop it into a LinkedIn post. Your proof goes wherever you go.</p>
+            </div>
+          </button>
+        </div>
+
+        <div class="features-mockup">
+          <div class="feature-mockup-panel active" data-panel="0">
+            <div class="mockup-placeholder">Structured review with Q&amp;A format, verified metrics, and authenticated badge</div>
+          </div>
+          <div class="feature-mockup-panel" data-panel="1">
+            <div class="mockup-placeholder">Trust score breakdown with component bars and transparent methodology</div>
+          </div>
+          <div class="feature-mockup-panel" data-panel="2">
+            <div class="mockup-placeholder">Public trust profile page with shareable link and embed preview</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       4. FEATURE DETAIL CARDS
+  ======================================== -->
+  <section class="feature-details section fade-in">
+    <div class="container">
+      <div class="section-header">
+        <span class="pill">Features</span>
+        <h2 class="section-heading">Everything you need to turn great work into verifiable proof</h2>
+        <p class="section-supporting">From your first review request to a fully verified trust profile. Here's what's inside.</p>
+      </div>
+
+      <div class="feature-cards-grid">
+        <div class="feature-detail-card stagger-item">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="9" y1="10" x2="15" y2="10"/></svg>
+          </div>
+          <h3>Structured Review Questions</h3>
+          <p>You choose the questions. Your client answers with real deliverables, metrics, and outcomes. No more guessing what to write.</p>
+        </div>
+
+        <div class="feature-detail-card stagger-item">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          </div>
+          <h3>Identity Verification</h3>
+          <p>Verified through ComplyCube. A "Verified" badge on your profile so prospects know you're a real person, not a bot.</p>
+        </div>
+
+        <div class="feature-detail-card stagger-item">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <h3>Trust Score</h3>
+          <p>A composite score built from verified components. Every piece of the methodology is visible to anyone checking your profile.</p>
+        </div>
+
+        <div class="feature-detail-card stagger-item">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 7h3v3H7zM14 7h3v3h-3zM7 14h3v3H7zM14 14h3v3h-3z"/></svg>
+          </div>
+          <h3>Digital Trust ID</h3>
+          <p>QR-scannable, tamper-proof, shareable. Hand it out on a business card. Embed it in an email. Links to your full verification page.</p>
+        </div>
+
+        <div class="feature-detail-card stagger-item">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <h3>Public Trust Profile</h3>
+          <p>One link with everything a prospect needs. Your score, reviews, and verification status. Updated in real time as you collect more proof.</p>
+        </div>
+
+        <div class="feature-detail-card stagger-item">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </div>
+          <h3>Automated Reminders</h3>
+          <p>Clients forget. TrustVerifi sends gentle nudges so your review request doesn't die in someone's inbox.</p>
+        </div>
+
+        <div class="feature-detail-card stagger-item">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <h3>Embed Widgets</h3>
+          <p>Add your trust profile to your website, proposals, or email signature. It pulls live data from your profile.</p>
+        </div>
+
+        <div class="feature-detail-card stagger-item">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+          </div>
+          <h3>Hire / Shortlist</h3>
+          <p>Prospects viewing your profile can signal intent directly. Both sides get notified. Fewer cold emails, more warm conversations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       5. COMPARISON
+  ======================================== -->
+  <section class="comparison section fade-in">
+    <div class="container">
+      <div class="section-header">
+        <span class="pill">The difference</span>
+        <h2 class="section-heading">Same project. Same happy client. Different proof.</h2>
+        <p class="section-supporting">One of these gets someone hired. The other sits in a drawer.</p>
+      </div>
+
+      <div class="comparison-grid">
+        <div class="comparison-card typical">
+          <div class="card-label">Typical Platform Review</div>
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="typical-quote">"Thank you for your hard work. Your work helped our product start off well. Highly recommended!"</p>
+          <p class="learns-label">What a prospect actually learns:</p>
+          <ul class="learns-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>What was delivered</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Specific results</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Timeline or scope</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Whether to hire them</li>
+          </ul>
+        </div>
+
+        <div class="comparison-card verified">
+          <div class="card-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            TrustVerifi Verified Review
+          </div>
+          <div class="project-info">
+            <p class="project-name">Paid Acquisition Campaigns</p>
+            <p class="project-meta">4 months &middot; Verified client identity</p>
+          </div>
+          <div>
+            <div class="qa-block"><p class="qa-question">Q: What did they deliver?</p><p class="qa-answer">A: Full management of Facebook and Google ad campaigns. Creative, targeting, budget optimization, weekly reporting.</p></div>
+            <div class="qa-block"><p class="qa-question">Q: What results did you see?</p><p class="qa-answer">A: Lead volume increased by 60%. Average ROI of 3.8x across both channels. Cost per lead dropped from $47 to $19.</p></div>
+            <div class="qa-block"><p class="qa-question">Q: Would you hire them again?</p><p class="qa-answer">A: Already renewed twice. Currently managing our Q2 campaigns.</p></div>
+          </div>
+          <div class="metric-pills">
+            <span class="metric-pill">+60% leads</span>
+            <span class="metric-pill">3.8x ROI</span>
+            <span class="metric-pill">$47&rarr;$19 CPL</span>
+          </div>
+          <p class="learns-label">What a prospect learns:</p>
+          <ul class="learns-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Exactly what was delivered</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Verified, specific results</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Timeline and scope</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Enough to make a hiring decision</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="comparison-below">
+        <p>This is the difference between a testimonial and verified proof.</p>
+        <a href="#" class="btn-primary">Start for free &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       6. HOW IT WORKS
+  ======================================== -->
+  <section id="how-it-works" class="how-it-works section fade-in">
+    <div class="container">
+      <div class="section-header">
+        <span class="pill">Getting started</span>
+        <h2 class="section-heading">From zero to shareable proof in minutes</h2>
+        <p class="section-supporting">You don't need to build out your full profile first. Start with one review request and your trust profile starts building itself.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="steps-connector"></div>
+        <div class="step-card stagger-item">
+          <div class="step-number">1</div>
+          <h3>Send a structured review request</h3>
+          <p>Pick a recent client. Add the project context. Choose the questions you want them to answer. We've got templates to get you started.</p>
+          <span class="time-pill">~3 min</span>
+        </div>
+        <div class="step-card stagger-item">
+          <div class="step-number">2</div>
+          <h3>Your client fills it in</h3>
+          <p>They get a clean, guided form. No account needed on their end. They answer your questions with specifics and submit.</p>
+          <span class="time-pill">~5 min for them</span>
+        </div>
+        <div class="step-card stagger-item">
+          <div class="step-number">3</div>
+          <h3>Your trust profile goes live</h3>
+          <p>The review lands on your profile with real metrics. Your trust score starts calculating. Share your profile link in your next proposal.</p>
+          <span class="time-pill">Instant</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       7. WHO IT'S FOR
+  ======================================== -->
+  <section class="who-its-for section fade-in">
+    <div class="container">
+      <div class="section-header">
+        <span class="pill">Built for</span>
+        <h2 class="section-heading">Whether you're solo or running a team, your proof should work for you</h2>
+      </div>
+
+      <div class="toggle-container">
+        <div class="toggle-group">
+          <button class="toggle-btn active" data-target="individual" id="toggleIndividual">Individual</button>
+          <button class="toggle-btn" data-target="business" id="toggleBusiness">Business</button>
+        </div>
+      </div>
+
+      <div class="toggle-content">
+        <div class="toggle-panel active" id="panelIndividual">
+          <h3>For freelancers and independent professionals</h3>
+          <p>You sell your expertise directly to clients. Sometimes the deal comes down to who has more visible proof. You've asked for testimonials and gotten ghosted, or gotten something so generic you can't use it. Your best work is invisible because nobody wrote down the numbers.</p>
+          <ul class="pain-list">
+            <li><span class="pain-dot"></span>Your Upwork reviews don't follow you when you go direct</li>
+            <li><span class="pain-dot"></span>Clients say "just tell me what to write" when you ask for a testimonial</li>
+            <li><span class="pain-dot"></span>You grew their revenue 40% but the review says "pleasure to work with"</li>
+          </ul>
+          <blockquote class="pull-quote">
+            <p>"Just remember, you're starting from zero on Upwork, no matter how good you are."</p>
+            <cite>— r/Upwork</cite>
+          </blockquote>
+          <a href="#" class="btn-primary">Build your trust profile &rarr;</a>
+        </div>
+
+        <div class="toggle-panel" id="panelBusiness">
+          <h3>For agencies and service businesses</h3>
+          <p>Your reputation is scattered across Clutch, Google, client conversations, and a case studies page you haven't updated in six months. Collecting proof from clients feels like pulling teeth. The directories that used to send you leads are now charging more for less.</p>
+          <ul class="pain-list">
+            <li><span class="pain-dot"></span>Clutch charges $1,500/month and the lead quality keeps dropping</li>
+            <li><span class="pain-dot"></span>You can't get a Google Business Profile because your team is fully remote</li>
+            <li><span class="pain-dot"></span>Every new case study takes weeks and is outdated by the time it ships</li>
+          </ul>
+          <blockquote class="pull-quote">
+            <p>"It's 100% pay to play. Your agency won't even show up in search unless you pay."</p>
+            <cite>— r/PPC</cite>
+          </blockquote>
+          <a href="#" class="btn-primary">Start building verified proof &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       8. BROKEN ALTERNATIVES
+  ======================================== -->
+  <section class="broken-alts section fade-in">
+    <div class="container">
+      <div class="section-header">
+        <span class="pill">Sound familiar?</span>
+        <h2 class="section-heading">The tools that were supposed to help aren't helping</h2>
+        <p class="section-supporting">These are real quotes from freelancers and agency owners in professional communities.</p>
+      </div>
+
+      <div class="broken-grid">
+        <div class="broken-card stagger-item"><div class="broken-emoji">&#11088;</div><p class="broken-label">Platform ratings</p><p class="broken-quote">"I have 100% job success and top rating... still getting ghosted on proposals."</p></div>
+        <div class="broken-card stagger-item"><div class="broken-emoji">&#128274;</div><p class="broken-label">Marketplace lock-in</p><p class="broken-quote">"If you start over, you lose every review you worked hard for."</p></div>
+        <div class="broken-card stagger-item"><div class="broken-emoji">&#128184;</div><p class="broken-label">Pay-to-play directories</p><p class="broken-quote">"It's 100% pay to play. Your agency won't even show up unless you pay."</p></div>
+        <div class="broken-card stagger-item"><div class="broken-emoji">&#129335;</div><p class="broken-label">Asking clients for reviews</p><p class="broken-quote">"Time after time, I'd deliver a project, get a 'thank you' and... that was it."</p></div>
+      </div>
+
+      <p class="broken-closing">TrustVerifi doesn't work like any of these. You own your proof. You control where it goes. Nobody can paywall it, delete it, or trap it behind a platform you're leaving.</p>
+    </div>
+  </section>
+
+  <!-- ========================================
+       9. SOCIAL PROOF / STATS
+  ======================================== -->
+  <section class="social-proof section fade-in">
+    <div class="container">
+      <div class="section-header">
+        <span class="pill">By the numbers</span>
+        <h2 class="section-heading">Professionals are already building verified proof</h2>
+      </div>
+
+      <div class="trust-signals-grid">
+        <div class="trust-signal-card">
+          <div class="trust-signal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <p class="trust-signal-text">Verification powered by ComplyCube</p>
+        </div>
+        <div class="trust-signal-card">
+          <div class="trust-signal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <p class="trust-signal-text">Your data is encrypted and secure</p>
+        </div>
+        <div class="trust-signal-card">
+          <div class="trust-signal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <p class="trust-signal-text">Built for professionals everywhere</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       10. FINAL CTA
+  ======================================== -->
+  <section class="final-cta fade-in">
+    <div class="container">
+      <div class="cta-card">
+        <span class="pill">Get started</span>
+        <h2 class="section-heading">Your proof should be as good as your work</h2>
+        <p class="cta-supporting">Set up your trust profile in minutes. Start free. No credit card.</p>
+        <a href="#" class="btn-primary">Start for free</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       11. FOOTER
+  ======================================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="navbar-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            TrustVerifi
+          </a>
+          <p class="footer-tagline">The trust layer for the internet</p>
+          <div class="footer-socials">
+            <a href="#" class="footer-social-link" aria-label="LinkedIn"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+            <a href="#" class="footer-social-link" aria-label="X / Twitter"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Terms and Conditions</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 TrustVerifi. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================
+       JAVASCRIPT
+  ======================================== -->
+  <script>
+    /* ---- Navbar scroll behavior ---- */
+    var navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 40) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    }, { passive: true });
+
+    /* ---- Mobile menu toggle ---- */
+    var mobileToggle = document.getElementById('mobileToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var menuIcon = document.getElementById('menuIcon');
+    var closeIcon = document.getElementById('closeIcon');
+
+    mobileToggle.addEventListener('click', function() {
+      var isOpen = mobileMenu.classList.toggle('open');
+      menuIcon.style.display = isOpen ? 'none' : 'block';
+      closeIcon.style.display = isOpen ? 'block' : 'none';
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.remove('open');
+        menuIcon.style.display = 'block';
+        closeIcon.style.display = 'none';
+      });
+    });
+
+    /* ---- Feature tabs ---- */
+    var featureTabs = document.querySelectorAll('.feature-tab');
+    var featurePanels = document.querySelectorAll('.feature-mockup-panel');
+
+    featureTabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        var target = tab.getAttribute('data-tab');
+        featureTabs.forEach(function(t) { t.classList.remove('active'); });
+        featurePanels.forEach(function(p) { p.classList.remove('active'); });
+        tab.classList.add('active');
+        document.querySelector('.feature-mockup-panel[data-panel="' + target + '"]').classList.add('active');
+      });
+    });
+
+    /* ---- Who It's For toggle ---- */
+    var toggleIndividual = document.getElementById('toggleIndividual');
+    var toggleBusiness = document.getElementById('toggleBusiness');
+    var panelIndividual = document.getElementById('panelIndividual');
+    var panelBusiness = document.getElementById('panelBusiness');
+
+    toggleIndividual.addEventListener('click', function() {
+      toggleIndividual.classList.add('active');
+      toggleBusiness.classList.remove('active');
+      panelIndividual.classList.add('active');
+      panelBusiness.classList.remove('active');
+    });
+
+    toggleBusiness.addEventListener('click', function() {
+      toggleBusiness.classList.add('active');
+      toggleIndividual.classList.remove('active');
+      panelBusiness.classList.add('active');
+      panelIndividual.classList.remove('active');
+    });
+
+    /* ---- Scroll animations (IntersectionObserver) ---- */
+    var fadeObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(function(el) {
+      fadeObserver.observe(el);
+    });
+
+    /* ---- Animated trust score counter ---- */
+    var scoreDisplay = document.getElementById('trustScoreDisplay');
+    var scoreBars = document.querySelectorAll('.score-bar-fill');
+    var scoreTarget = 87;
+    var scoreAnimated = false;
+
+    var scoreObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && !scoreAnimated) {
+          scoreAnimated = true;
+          var duration = 1200;
+          var startTime = performance.now();
+
+          function animate(now) {
+            var elapsed = now - startTime;
+            var progress = Math.min(elapsed / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            scoreDisplay.textContent = Math.round(eased * scoreTarget);
+            if (progress < 1) requestAnimationFrame(animate);
+          }
+
+          requestAnimationFrame(animate);
+
+          scoreBars.forEach(function(bar) {
+            var w = bar.getAttribute('data-width');
+            setTimeout(function() { bar.style.width = w + '%'; }, 200);
+          });
+
+          scoreObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    scoreObserver.observe(document.querySelector('.hero-profile-card'));
+  </script>
+
+</body>
 </html>
