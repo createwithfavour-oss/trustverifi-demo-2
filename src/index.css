@@ -44,6 +44,7 @@ body {
   background-color: var(--color-bg-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 .fade-in-section {
@@ -63,13 +64,21 @@ body {
   transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 
+.is-visible .stagger-children > *:nth-child(1),
 .stagger-children.is-visible > *:nth-child(1) { transition-delay: 0s; opacity: 1; transform: translateY(0); }
+.is-visible .stagger-children > *:nth-child(2),
 .stagger-children.is-visible > *:nth-child(2) { transition-delay: 0.1s; opacity: 1; transform: translateY(0); }
+.is-visible .stagger-children > *:nth-child(3),
 .stagger-children.is-visible > *:nth-child(3) { transition-delay: 0.15s; opacity: 1; transform: translateY(0); }
+.is-visible .stagger-children > *:nth-child(4),
 .stagger-children.is-visible > *:nth-child(4) { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
+.is-visible .stagger-children > *:nth-child(5),
 .stagger-children.is-visible > *:nth-child(5) { transition-delay: 0.25s; opacity: 1; transform: translateY(0); }
+.is-visible .stagger-children > *:nth-child(6),
 .stagger-children.is-visible > *:nth-child(6) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
+.is-visible .stagger-children > *:nth-child(7),
 .stagger-children.is-visible > *:nth-child(7) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
+.is-visible .stagger-children > *:nth-child(8),
 .stagger-children.is-visible > *:nth-child(8) { transition-delay: 0.4s; opacity: 1; transform: translateY(0); }
 
 @media (prefers-reduced-motion: reduce) {

@@ -41,8 +41,8 @@ export default function Hero() {
     <section className="pt-28 pb-16 md:pt-36 md:pb-24 bg-bg-primary">
       <div className="max-w-[1100px] mx-auto px-5 md:px-8 text-center">
         <h1
-          className="font-serif text-brand-dark leading-[1.15] max-w-3xl mx-auto"
-          style={{ fontSize: 'clamp(36px, 4.5vw, 56px)' }}
+          className="font-serif text-brand-dark leading-[1.15] max-w-[800px] mx-auto"
+          style={{ fontSize: 'clamp(32px, 4vw, 52px)' }}
         >
           Your work speaks for itself.
           <br />
